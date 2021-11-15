@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../views/login.css";
+import axios from "axios";
 const Login = () => {
-  const handleSubmit = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login");
+    try {
+      const user = await axios.post("/api/users/login", {
+        email,
+        password,
+      });
+      console.log(user);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="login">
@@ -14,12 +25,14 @@ const Login = () => {
           type="email"
           required
           placeholder="email"
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           className="login__password"
           type="password"
           required
           placeholder="password"
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button className="login__submit">Login</button>
         <div className="login__link">
